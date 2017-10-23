@@ -1,0 +1,10 @@
+Interface
+
+- Insert selection and input box value into datase(empty record will insert at the moment)
+- some input box disappear when save button is clicked
+
+
+
+
+Grpahic
+- plot bouncing when refresh the module
