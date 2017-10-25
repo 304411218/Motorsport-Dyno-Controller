@@ -1,8 +1,18 @@
+
 <?php 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////																								//////
+/////									Version 1.1													//////
+/////																								//////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////			
+
+
+
 // connect to other file
 include 'db/connect.php';
 include 'db/security.php';
 
+/*
 $combine = "SELECT 
     TT.idTType      AS 'Test ID',
     TT.TName        AS 'Test Name',
@@ -25,17 +35,10 @@ WHERE
 	AND TT.TControl  = CP.idVar
 	AND TT.TFixed    = FP.idVar
 	AND TT.TOutput   = OP.idVar;";
-	 if(isset($_REQUEST["submit"]))
- {
-	 $min=trim($_REQUEST["min"]);
-	 $max=trim($_REQUEST["max"]);
-	 $id=$_POST["type_id"];
-	  $sql= "INSERT INTO testconfig(TType,Minimum,Maximum,Fix_value)VALUES ('id','min','max')";
-	 $result = mysqli_query($connect, $sql);
-	 
-	 
-	 
- }
+ */
+ 
+ 
+
 ?>
 
 <!DOCTYPE html>
@@ -93,7 +96,7 @@ function refresh()
     Plotly.d3.csv("/uploads/plot/test.csv", function(data){ processData(data) } );
 
 };
-    
+
 function processData(allRows) {
 
     console.log(allRows);
@@ -143,13 +146,13 @@ function makePlotly( x, y, standard_deviation ){
 
 <script type="text/javascript">
   $(document).ready(function(){ /* PREPARE THE SCRIPT */
-    $("#testtype").change(function(){ /* WHEN YOU CHANGE AND SELECT FROM THE SELECT FIELD */
-       var type_id = $(this).val();   /* GET THE VALUE OF THE SELECTED DATA */
+    $("#testconfig").change(function(){ /* WHEN YOU CHANGE AND SELECT FROM THE SELECT FIELD */
+       var config_id = $(this).val();   /* GET THE VALUE OF THE SELECTED DATA */
 
       $.ajax({ /* THEN THE AJAX CALL */
         method: "POST", /* TYPE OF METHOD TO USE TO PASS THE DATA */
-        url: "get_type.php", /* PAGE WHERE WE WILL PASS THE DATA */
-        data:{type_id:type_id}, /* THE DATA WE WILL BE PASSING */
+        url: "get_config.php", /* PAGE WHERE WE WILL PASS THE DATA */
+        data:{config_id:config_id}, /* THE DATA WE WILL BE PASSING */
         success: function(data){ /* GET THE TO BE RETURNED DATA */
           $("#show_info").html(data); /* THE RETURNED DATA WILL BE SHOWN IN THIS DIV */
         }
@@ -157,15 +160,45 @@ function makePlotly( x, y, standard_deviation ){
 
     });
   });
+  
 </script>
-
-
+<script type="text/javascript">
+/*$(document).ready(function(){ 
+$('#testconfig' ).change(function() {
+   var testconfigid = $(this).val() ;    // get the selected value from dropdown
+   $('#testconfig' ).html(testconfigid);
+   alert(testconfigid);
+});             
+});   */             
+</script>
  </div>
- 
+ <div id="existingconfig" class="main">
+ <h3>Choose Existing Configuration</h3>
+ <?php
+ //query TestConfig
 
-    <div id="selection" class="main">
+$sql = "SELECT * FROM testconfig ORDER BY idtestconfig";
+$result = $db->query($sql);
+	echo "<label>Configuration: </label>";
+    echo "<select id='testconfig' name='testconfig'>";
+	echo"<option value=''>Select Configuration</option>";
+    while ($row = $result->fetch_assoc()) {
+                  unset($id1, $name1);
+                  $id1 = $row['idtestconfig'];
+                  $name1 = $row['CfgName']; 
+                  echo '<option value="'.$id1.'">'.$name1.'</option>';  
+				
+}
+    echo "</select><br/>";
 
+	
+?>
+</div>
+
+<div id="New" class="main">
+<h3>Create New profile</h3>
 <?php
+
 //query testType
 
 $sql = "SELECT * FROM testtype ORDER BY idTType";
@@ -175,13 +208,13 @@ $result = $db->query($sql);
 	echo"<option value=''>Select Type</option>";
     while ($row = $result->fetch_assoc()) {
 		
-                  unset($id, $name);
-                  $id = $row['idTType'];
-                  $name = $row['TName']; 
-                  echo '<option value="'.$id.'">'.$name.'</option>';  
+                  unset($id1, $name1);
+                  $id1 = $row['idTType'];
+                  $name1 = $row['TName']; 
+                  echo '<option value="'.$id1.'">'.$name1.'</option>';  
 				
 }
-    echo "</select><br/>";
+    echo "</select><br/><br/>";
 
 	
 	
@@ -194,12 +227,12 @@ $result = $db->query($sql);
 	echo"<option value=''>Select Model</option>";
     while ($row = $result->fetch_assoc()) {
 		
-                  unset($id, $name);
-                  $id = $row['idModel'];
-                  $name = $row['ModelName']; 
-                  echo '<option value="'.$id.'">'.$name.'</option>';            
+                  unset($id2, $name2);
+                  $id2 = $row['idModel'];
+                  $name2 = $row['ModelName']; 
+                  echo '<option value="'.$id2.'">'.$name2.'</option>';            
 }
-echo "</select><br/>";
+echo "</select><br/><br/>";
 
 //query series
 
@@ -211,27 +244,45 @@ $result = $db->query($sql);
 	echo"<option value=''>Select series</option>";
     while ($row = $result->fetch_assoc()) {
 		
-                  unset($id, $name);
-                  $id = $row['idSeries'];
-                  $name = $row['SeriesName']; 
-                  echo '<option value="'.$id.'">'.$name.'</option>';            
+                  unset($id3, $name3);
+                  $id3 = $row['idSeries'];
+                  $name3 = $row['SeriesName']; 
+                  echo '<option value="'.$id3.'">'.$name3.'</option>';            
 }
 echo "</select><br/><br/>";	
 
 ?>
 
-<div id="show_info" >
 
 </div>
-<?php
-//echo "<form method='post' id='controlVariable' name='input' action='insert.php'>";
-//echo "<input name='TestName' type='text'/><br/>";
 
+<div id="outer" class="main">
 
-?>
+	<div id="show_info" style="display: inline-block;">
+	
 
-</div>
-<div id="input" class="main">
+	</div>
+
+	<div id="input" style="display: inline-block;">
+<!--	
+		<form name='config1' method='post' action="insert.php";>
+			<input name='TestName' style="float: right;" type='text' value="";/><br/><br/>
+	
+			<input name='min' style="float: right;" type='text'/><br/><br/>
+
+			<input name='max' style="float: right;" type='text'/><br/><br/><br/>
+			
+			<input type='submit'  name='submit-testconfig' value='insert'>
+
+		</form>
+	</div>
+-->
+	<div id="submit" >
+	
+
+	
+	</div>
+
 
 
 </div>
