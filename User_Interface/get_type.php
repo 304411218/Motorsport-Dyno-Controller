@@ -1,24 +1,20 @@
  <?php  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////																								//////
+/////									Version 1.1													//////
+/////							This Scirpt is not finished											//////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////		
+ 
  //load_data.php  
  $connect = mysqli_connect("localhost", "root", "", "dyno");  
  $output = '';  
+ 
 
+   if (empty($_POST["type_id"])) {
+       echo "Please select TEST type <br/><br/>";
 
- /*if(!empty($_POST)){
-	if(isset($_POST['First_name'],$_POST['Last_name'])){
-		$First_name = trim($_POST['First_name']);
-		$Last_name  = trim($_POST['Last_name']);
-		if(!empty($First_name) && !empty($Last_name)){
-		$insert = $db->prepare("INSERT INTO people(First_name,Last_name,created) VALUES (?,?,NOW())");
-		$insert ->bind_param('ss',$First_name,$Last_name);
-			if($insert->execute()){
-				header('Location: index.php');
-				die();
-			}		
-		}	
-	}
-}
- */
+  } else{
+
  if(isset($_POST["type_id"]))  
  {  
 
@@ -33,13 +29,18 @@
 	   
       }  
 	  
-	  echo "<form method='post'>";
-	  echo "TestName ";
-	  echo "<input name='TestName' type='text'/><br/><br/>";
-      echo "$output minimum ";
-	  echo "<input name='min' type='text'/><br/><br/>";
-	  echo "$output Maximum ";
-	  echo "<input name='max' type='text'/><br/>";
-	  echo "<input type='submit' name='Submit' value='insert'>";
+	echo "<form name='config' method='post' action='insert.php'>";
+	echo "TestName ";
+	echo "<input name='TestName' type='text'/><br/><br/>";
+    echo "$output Minimum";
+	echo "<input name='min' type='text'/><br/><br/>";
+	echo "$output Maximum";
+	echo "<input name='max' type='text'/><br/>";
+	echo "<input type='submit' name='submit-testconfig' value='Set New Profile'>";
+	echo "</form>";
+	  
+	  
  }  
+  }
+
  ?>  
